@@ -19,7 +19,7 @@ router.post('/register',function(req,res,next){
 })
 
 async function database(req,res){
-  if(usersInfo.includes(req.body.email)){
+  if(!usersInfo.includes(req.body.email)){
     return res.status(501).json({"data": "cannot register"});
   }
   else{
