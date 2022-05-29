@@ -7,6 +7,8 @@ const blog = require('../models/blog');
 const CommentBlog = require('../models/comment');
 const Mail = require('../models/mail');
 const comment = require('../models/comment');
+
+const usersInfo = ['shpalushi@themclabs.com', 'kcumraku@themclabs.com', 'xhbora@themclabs.com'];
 /* GET users listing. */
 // router.get('/', function(req, res, next) {
 //   res.send('respond with a resource');
@@ -17,18 +19,23 @@ router.post('/register',function(req,res,next){
 })
 
 async function database(req,res){
-  var user= new User({
-    name:req.body.name,
-    email:req.body.email,
-    password: User.hashPassword(req.body.password),
-    createdAt: Date.now()
-  });
-  try{
-    doc=await user.save()
-    return res.status(201).json(doc);
+  if(usersInfo.includes(req.body.email)){
+    return res.status(501).json({"data": "cannot register"});
   }
-  catch(err){
-    return res.status(501).json(err);
+  else{
+    var user= new User({
+      name:req.body.name,
+      email:req.body.email,
+      password: User.hashPassword(req.body.password),
+      createdAt: Date.now()
+    });
+    try{
+      doc=await user.save()
+      return res.status(201).json(doc);
+    }
+    catch(err){
+      return res.status(501).json(err);
+    }
   }
 }
 
